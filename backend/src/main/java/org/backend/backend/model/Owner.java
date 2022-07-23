@@ -17,6 +17,6 @@ public class Owner {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "owner_id")
     @Column(name = "owner_id")
     private Long id;
-    private String name;
+    private String username;
     private String password;
 }
