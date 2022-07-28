@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PointRepository extends JpaRepository<Point, Long> {
-    @Query(value = "SELECT new Point (e.x, e.y, e.radius, e.result) FROM Point e where e.owner.id = :id ")
-    List<Point> findAllPointsByOwnerName(@Param(value = "id") Long id);
+    @Query(value = "SELECT new Point (e.x, e.y, e.radius, e.result) FROM Point e where e.owner.username = :username ")
+    List<Point> findAllPointsByOwnerName(@Param(value = "username") String username);
 }

@@ -24,8 +24,8 @@ public class PointsAndOwnersApplication {
             http.csrf().disable()
                     .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                     .authorizeRequests()
-                    .antMatchers(HttpMethod.POST, "/api/login").permitAll()
-                    .antMatchers(HttpMethod.POST, "/api/owner").permitAll()
+                    .antMatchers(HttpMethod.POST, "/api/rest/login").permitAll()
+                    .antMatchers(HttpMethod.POST, "/api/rest/register").permitAll()
                     .anyRequest().authenticated();
         }
     }

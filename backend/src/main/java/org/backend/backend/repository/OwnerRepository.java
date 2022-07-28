@@ -5,8 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
-
 public interface OwnerRepository extends JpaRepository<Owner, Long> {
     @Query(value = "SELECT u FROM Owner u WHERE u.username = :name")
     Owner getOwnerByName(@Param(value = "name") String name);

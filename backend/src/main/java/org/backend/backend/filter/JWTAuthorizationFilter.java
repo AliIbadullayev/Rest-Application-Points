@@ -2,7 +2,6 @@ package org.backend.backend.filter;
 
 import io.jsonwebtoken.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -13,8 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
     private final String HEADER = "Authorization";
@@ -52,7 +49,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     }
 
     private Claims getClaim(String token) {
-        System.out.println(Jwts.parser().setSigningKey(SECRET.getBytes()).parseClaimsJws(token));
         return Jwts.parser().setSigningKey(SECRET.getBytes()).parseClaimsJws(token).getBody();
     }
 
@@ -69,6 +65,5 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     private void setUpSpringAuthentication(Claims claims) {
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(claims.getSubject(), null, Collections.emptyList());
         SecurityContextHolder.getContext().setAuthentication(auth);
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
     }
 }

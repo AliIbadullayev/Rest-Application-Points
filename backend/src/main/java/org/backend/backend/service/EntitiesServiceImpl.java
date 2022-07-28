@@ -1,43 +1,46 @@
 package org.backend.backend.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.backend.backend.exception.PointValidationException;
 import org.backend.backend.model.Owner;
 import org.backend.backend.model.Point;
 import org.backend.backend.repository.PointRepository;
+import org.backend.backend.util.PointResultChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.backend.backend.repository.OwnerRepository;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
 @Service
-public class EntitiesServiceImpl implements OwnerService, PointsService{
+public class EntitiesServiceImpl implements EntitiesService {
     @Autowired
     OwnerRepository ownerRepository;
 
     @Autowired
     PointRepository pointRepository;
 
+    @Autowired
+    PointResultChecker pointResultChecker;
+
     // Points Service Realization
-    @Override
-    public Point getById(Long id) {
-        log.info("In PointsServiceImpl getById {}", id);
-        return pointRepository.getOne(id);
-    }
 
     @Override
-    public void save(Point point, Owner owner) {
+    public void savePoint(Point point, String username) throws PointValidationException {
         log.info("In PointsServiceImpl save {}", point);
-        point.setOwner(owner);
+        if (existsOwnerByName(username)){
+            Owner owner = ownerRepository.getOwnerByName(username);
+            point.setOwner(owner);
+            point.setResult(pointResultChecker.checkResult(point));
+        }
         pointRepository.save(point);
     }
 
     @Override
-    public List<Point> getAll(Owner owner) {
-        log.info("In PointsServiceImpl getAll {}", owner.getId());
-        return pointRepository.findAllPointsByOwnerName(owner.getId());
+    public List<Point> getAllPoints(String username) {
+        log.info("In PointsServiceImpl getAll {}", username);
+        return existsOwnerByName(username) ? pointRepository.findAllPointsByOwnerName(username) : null;
     }
 
     //Owner Service Realization
