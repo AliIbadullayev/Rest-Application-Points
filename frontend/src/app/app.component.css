@@ -1,0 +1,10 @@
+
+.p-inputtext {
+  display: block;
+  margin-bottom: .5rem;
+}
+
+.p-field * {
+  display: block;
+}
+
