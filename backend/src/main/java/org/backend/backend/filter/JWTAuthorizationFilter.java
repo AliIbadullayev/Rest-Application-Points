@@ -1,6 +1,7 @@
 package org.backend.backend.filter;
 
 import io.jsonwebtoken.*;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -30,12 +31,11 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             } else {
                 SecurityContextHolder.clearContext();
             }
+            filterChain.doFilter(request, response);
         }
-        catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException e) {
+        catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
-        } finally {
-            filterChain.doFilter(request, response);
         }
     }
 

@@ -13,9 +13,15 @@ export class AuthService {
 
 
   constructor( private http : HttpClient) {
-    // @ts-ignore
-    const token = JSON.parse(localStorage.getItem('currentUser'));
-    this._isLoggedIn$.next(!!token);
+    try{
+      // @ts-ignore
+      const token = JSON.parse(localStorage.getItem('currentUser'));
+      console.log(!!token);
+      this._isLoggedIn$.next(!!token);
+    }catch (e) {
+      console.log(e);
+      this._isLoggedIn$.next(false);
+    }
   }
 
   login(form: FormGroup) {

@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {FormBuilder, FormGroup} from "@angular/forms";
+import {AuthService} from "../../auth.service";
 
 export interface POINTS {
   id: Number;
@@ -125,18 +126,15 @@ export class MainFormComponent implements OnInit {
 
     this.http.get('/rest/getpoints', {headers: headers})
       .subscribe(res=>{
-        if (res != null){
-
-          // @ts-ignore
-          localStorage.setItem('tempPoints', JSON.stringify(res));
-          // @ts-ignore
-          this.Points = res;
-
-          //Here I draw all points on open of page
-          this.drawPoints();
-          return;
-        }
+        // @ts-ignore
+        localStorage.setItem('tempPoints', JSON.stringify(res));
+        // @ts-ignore
+        this.Points = res;
+        //Here I draw all points on open of page
+        this.drawPoints();
         return;
+      },()=>{
+        localStorage.clear();
       })
   }
 
