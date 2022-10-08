@@ -134,7 +134,7 @@ export class MainFormComponent implements OnInit {
         this.drawPoints();
         return;
       },()=>{
-        localStorage.clear();
+        // localStorage.clear();
       })
   }
 
